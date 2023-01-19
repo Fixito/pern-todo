@@ -1,18 +1,24 @@
 import { useGlobalContext } from '../context.jsx';
 import Alert from '../components/Alert.jsx';
 import TodoList from '../components/TodoList.jsx';
+import { useEffect } from 'react';
 
 const Todos = () => {
   const {
-    user,
+    user: { user },
     todoList,
+    getTodos,
     todo,
     setTodo,
     handleSubmit,
     isEditing,
     inputRef,
-    alert,
+    alert
   } = useGlobalContext();
+
+  useEffect(() => {
+    getTodos();
+  }, []);
 
   return (
     <main>
@@ -20,7 +26,10 @@ const Todos = () => {
         <div>
           {alert.show && <Alert {...alert} />}
           <hgroup>
-            <h1>Bonjour {user},</h1>
+            <h1>
+              Bonjour{' '}
+              {`${user.name.split('')[0].toUpperCase()}${user.name.slice(1)}`},
+            </h1>
             <h2>Voici la liste de vos tâches à faire</h2>
           </hgroup>
           <form onSubmit={handleSubmit}>

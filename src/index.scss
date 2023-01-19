@@ -19,6 +19,25 @@ $primary-700: #303f9f;
 // Import Pico
 @import '@picocss/pico/scss/pico';
 
+body {
+  margin: 0;
+}
+
+.hero {
+  min-height: calc(100vh - 70px);
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)),
+    url(assets/background-producivity.jpg) center/cover;
+}
+
+.hero header {
+  padding: 3rem 0;
+}
+
+.hero h1,
+.hero p {
+  color: #edf0f3;
+}
+
 .main {
   display: flex;
   flex-direction: column;
@@ -67,6 +86,10 @@ article div:nth-of-type(2) {
   background-size: cover;
 }
 
+#register-img {
+  background-image: url(assets/register-image.jpg);
+}
+
 @media screen and (min-width: 922px) {
   article div:nth-of-type(2) {
     display: block;
@@ -78,7 +101,6 @@ article div:nth-of-type(2) {
 //* TodoList
 table td {
   font-size: 1rem;
-  text-transform: capitalize;
 }
 
 //* Todo
@@ -111,7 +133,6 @@ table button {
 }
 
 .clear-btn {
-  text-transform: capitalize;
   height: 2.5rem;
   display: grid;
   align-items: center;
@@ -135,7 +156,6 @@ table button {
   font-size: 0.7rem;
   border-radius: 0.25rem;
   letter-spacing: 0.25rem;
-  text-transform: capitalize;
 }
 
 .alert-success {
@@ -146,4 +166,8 @@ table button {
 .alert-danger {
   color: #d32f2f;
   background: rgba(229, 57, 53, 0.125);
+}
+
+.cta {
+  color: #fff;
 }
