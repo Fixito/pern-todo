@@ -1,11 +1,13 @@
 import { useGlobalContext } from '../context.jsx';
-import Alert from '../components/Alert.jsx';
 import TodoList from '../components/TodoList.jsx';
+import Alert from '../components/Alert.jsx';
+import Loader from '../components/Loader.jsx';
 import { useEffect } from 'react';
 
 const Todos = () => {
   const {
     user: { user },
+    isLoading,
     todoList,
     getTodos,
     todo,
@@ -18,7 +20,12 @@ const Todos = () => {
 
   useEffect(() => {
     getTodos();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  if (isLoading) {
+    return <Loader />;
+  }
 
   return (
     <main>

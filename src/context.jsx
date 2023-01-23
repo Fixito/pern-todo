@@ -17,6 +17,7 @@ const AppProvider = ({ children }) => {
     email: '',
     password: ''
   });
+  const [isLoading, setIsLoading] = useState(true);
   const [todo, setTodo] = useState('');
   const [editID, setEditID] = useState(null);
   const [isEditing, setIsEditing] = useState(false);
@@ -86,13 +87,16 @@ const AppProvider = ({ children }) => {
     const { token } = getUserFromLocallStorage();
 
     try {
+      setIsLoading(true);
       const { data } = await axios.get('http://localhost:5000/api/v1/todos', {
         headers: {
           Authorization: `Bearer ${token}`
         }
       });
       setTodoList(data.todos);
+      setIsLoading(false);
     } catch (error) {
+      setIsLoading(false);
       console.log(error.response.data.msg);
     }
   };
@@ -211,6 +215,7 @@ const AppProvider = ({ children }) => {
       value={{
         user,
         userInputs,
+        isLoading,
         todoList,
         todo,
         isEditing,
