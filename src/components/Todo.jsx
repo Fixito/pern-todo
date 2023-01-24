@@ -1,8 +1,8 @@
-import { useGlobalContext } from '../context.jsx';
+import { useTodosContext } from '../context/todos_context.jsx';
 import { FaEdit, FaTrashAlt } from 'react-icons/fa';
 
 const Todo = ({ todo_id, name }) => {
-  const { editTodo, deleteTodo } = useGlobalContext();
+  const { editTodo, deleteTodo } = useTodosContext();
 
   return (
     <tr key={todo_id}>

@@ -1,13 +1,15 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // pages
-import SharedLayout from './pages/SharedLayout.jsx';
-import Error from './pages/Error.jsx';
-import Home from './pages/Home.jsx';
-import Register from './pages/Register.jsx';
-import Login from './pages/Login.jsx';
-import Logout from './pages/Logout.jsx';
-import Todos from './pages/Todos.jsx';
-import ProtectedRoute from './pages/ProtectedRoute.jsx';
+import {
+  ErrorPage,
+  Home,
+  Login,
+  Logout,
+  ProtectedRoute,
+  Register,
+  SharedLayout,
+  Todos
+} from './pages';
 // context
 import AppProvider from './context.jsx';
 
@@ -36,7 +38,7 @@ const App = () => {
                 </ProtectedRoute>
               }
             />
-            <Route path='*' element={<Error />} />
+            <Route path='*' element={<ErrorPage />} />
           </Route>
         </Routes>
       </AppProvider>

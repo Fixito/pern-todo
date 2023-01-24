@@ -1,8 +1,8 @@
-import { useGlobalContext } from '../context.jsx';
+import { useTodosContext } from '../context/todos_context.jsx';
 import Todo from './Todo.jsx';
 
 const TodoList = () => {
-  const { todoList, clearTodos } = useGlobalContext();
+  const { todos, clearTodos } = useTodosContext();
 
   return (
     <table role='grid'>
@@ -13,7 +13,7 @@ const TodoList = () => {
         </tr>
       </thead>
       <tbody>
-        {todoList.map((todo) => {
+        {todos.map((todo) => {
           return <Todo key={todo.todo_id} {...todo} />;
         })}
       </tbody>

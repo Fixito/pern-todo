@@ -1,30 +1,38 @@
 import { useGlobalContext } from '../context.jsx';
+import { useTodosContext } from '../context/todos_context.jsx';
 import TodoList from '../components/TodoList.jsx';
 import Alert from '../components/Alert.jsx';
+import Error from '../components/Error.jsx';
 import Loader from '../components/Loader.jsx';
 import { useEffect } from 'react';
 
 const Todos = () => {
   const {
     user: { user },
-    isLoading,
-    todoList,
-    getTodos,
-    todo,
-    setTodo,
-    handleSubmit,
-    isEditing,
-    inputRef,
     alert
   } = useGlobalContext();
+  const {
+    fetchTodos,
+    todos,
+    todos_loading: isLoading,
+    todos_error: isError,
+    handleChange,
+    handleSubmit,
+    todo_input,
+    todo_editing: isEditing,
+    inputRef
+  } = useTodosContext();
 
   useEffect(() => {
-    getTodos();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    fetchTodos();
+  }, [fetchTodos]);
 
   if (isLoading) {
     return <Loader />;
+  }
+
+  if (isError) {
+    return <Error />;
   }
 
   return (
@@ -44,16 +52,16 @@ const Todos = () => {
               type='text'
               name='todo'
               id='todo'
-              placeholder='Ex : Projet perso'
-              value={todo}
-              onChange={(e) => setTodo(e.target.value)}
+              placeholder='Ex : Faire le ménage'
+              value={todo_input}
+              onChange={handleChange}
               ref={inputRef}
             />
             <button className='btn'>{isEditing ? 'Éditer' : 'Ajouter'}</button>
           </form>
         </div>
       </article>
-      {todoList.length > 0 && <TodoList />}
+      {todos.length > 0 && <TodoList />}
     </main>
   );
 };
