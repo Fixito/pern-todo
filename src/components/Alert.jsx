@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { useGlobalContext } from '../context.jsx';
+import { useGlobalContext } from '../context/global_context.jsx';
 
 const Alert = ({ msg, type }) => {
   const { showAlert: removeAlert, todoList } = useGlobalContext();

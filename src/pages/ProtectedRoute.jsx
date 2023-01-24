@@ -1,10 +1,10 @@
 import { Navigate } from 'react-router-dom';
-import { useGlobalContext } from '../context.jsx';
+import { useUserContext } from '../context/user_context.jsx';
 
 const ProtectedRoute = ({ children }) => {
-  const { user } = useGlobalContext();
+  const { token } = useUserContext();
 
-  if (!user) {
+  if (!token) {
     return <Navigate to='/' />;
   }
 

@@ -1,14 +1,13 @@
 import { useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
-import { useGlobalContext } from '../context.jsx';
+import { useUserContext } from '../context/user_context.jsx';
 
 const Logout = () => {
-  const { setUser } = useGlobalContext();
+  const { logout } = useUserContext();
 
   useEffect(() => {
-    setUser(null);
-    localStorage.removeItem('user');
-  }, [setUser]);
+    logout();
+  }, [logout]);
 
   return <Navigate to='/' />;
 };

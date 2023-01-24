@@ -1,4 +1,2 @@
-export const getUserFromLocallStorage = () =>
-  localStorage.getItem('user')
-    ? JSON.parse(localStorage.getItem('user'))
-    : null;
+export const getLocalStorage = () =>
+  localStorage.getItem('user') ? JSON.parse(localStorage.getItem('user')) : {};

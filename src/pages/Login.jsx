@@ -1,8 +1,28 @@
-import { useGlobalContext } from '../context.jsx';
+import { useUserContext } from '../context/user_context.jsx';
+import { useGlobalContext } from '../context/global_context.jsx';
 import Alert from '../components/Alert.jsx';
+import { useNavigate } from 'react-router-dom';
 
 const Login = () => {
-  const { alert, userInputs, handleChange, login } = useGlobalContext();
+  const { user_inputs, handleChange, login } = useUserContext();
+  const { alert, showAlert } = useGlobalContext();
+  const navigate = useNavigate();
+
+  const handleLogin = async (e) => {
+    e.preventDefault();
+    let occuredError = false;
+
+    try {
+      await login();
+    } catch (error) {
+      occuredError = true;
+      showAlert(error.message, 'danger', true);
+    }
+
+    if (!occuredError) {
+      navigate('/todos');
+    }
+  };
 
   return (
     <main className='main'>
@@ -10,16 +30,15 @@ const Login = () => {
         <div>
           {alert.show && <Alert {...alert} />}
           <h1>Se connecter</h1>
-          <form onSubmit={login}>
+          <form onSubmit={handleLogin}>
             <label htmlFor='email'>Adresse email</label>
             <input
-              type='email'
+              type='text'
               id='email'
               name='email'
               placeholder='Email address'
-              value={userInputs.email}
+              value={user_inputs.email}
               onChange={handleChange}
-              required
             />
             <label htmlFor='password'>Mot de passe</label>
             <input
@@ -27,9 +46,8 @@ const Login = () => {
               id='password'
               name='password'
               placeholder='Mot de passe'
-              value={userInputs.password}
+              value={user_inputs.password}
               onChange={handleChange}
-              required
             />
             <button type='submit'>Se connecter</button>
           </form>

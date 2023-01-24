@@ -1,8 +1,8 @@
 import { NavLink, Link } from 'react-router-dom';
-import { useGlobalContext } from '../context.jsx';
+import { useUserContext } from '../context/user_context.jsx';
 
 const Navbar = () => {
-  const { user, logout } = useGlobalContext();
+  const { name } = useUserContext();
 
   return (
     <nav className='container'>
@@ -14,12 +14,12 @@ const Navbar = () => {
         </li>
       </ul>
       <ul>
-        {!user?.user.name && (
+        {!name && (
           <li>
             <NavLink to='/register'>S'enregister</NavLink>
           </li>
         )}
-        {user?.user.name ? (
+        {name ? (
           <>
             <li>
               <NavLink to='/todos'>Tâches à faire</NavLink>

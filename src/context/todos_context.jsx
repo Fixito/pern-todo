@@ -2,8 +2,8 @@ import React, { useContext, useReducer, useRef, useCallback } from 'react';
 import axios from 'axios';
 import { todos_url as url } from '../utils/constants.js';
 import todos_reducer from '../reducers/todos_reducer.js';
-import { getUserFromLocallStorage } from '../utils/helpers.js';
-import { useGlobalContext } from '../context.jsx';
+import { useGlobalContext } from './global_context.jsx';
+import { getLocalStorage } from '../utils/helpers.js';
 // actions
 import {
   GET_TODOS_BEGIN,
@@ -31,6 +31,7 @@ const TodosContext = React.createContext();
 
 export const TodosProvider = ({ children }) => {
   const [state, dispatch] = useReducer(todos_reducer, initialState);
+  const { showAlert } = useGlobalContext();
   const inputRef = useRef(null);
 
   const handleChange = (e) => {
@@ -39,11 +40,11 @@ export const TodosProvider = ({ children }) => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { token } = getUserFromLocallStorage();
+    const { token } = getLocalStorage();
     const { todos, todo_id, todo_input, todo_editing } = state;
 
     if (!todo_input) {
-      // showAlert('Veuillez remplir le champ', 'danger', true);
+      showAlert('Veuillez remplir le champ', 'danger', true);
     } else if (todo_input && !todo_editing) {
       try {
         const {
@@ -68,7 +69,7 @@ export const TodosProvider = ({ children }) => {
       } catch (error) {
         console.log(error.response.data.msg);
       }
-      // showAlert('Tâche ajoutée', 'success', true);
+      showAlert('Tâche ajoutée', 'success', true);
     } else {
       const newTodos = todos.map((todo) =>
         todo.todo_id === todo_id ? { ...todo, name: todo_input } : todo
@@ -88,7 +89,7 @@ export const TodosProvider = ({ children }) => {
       } catch (error) {
         console.log(error.response.data.msg);
       }
-      // showAlert('Tâche éditée', 'success', true);
+      showAlert('Tâche éditée', 'success', true);
     }
 
     backTodefault();
@@ -103,7 +104,7 @@ export const TodosProvider = ({ children }) => {
   };
 
   const deleteTodo = async (id) => {
-    const { token } = getUserFromLocallStorage();
+    const { token } = getLocalStorage();
     dispatch({ type: DELETE_TODO, payload: id });
 
     try {
@@ -116,12 +117,12 @@ export const TodosProvider = ({ children }) => {
       console.log(error.response.data.msg);
     }
 
-    // showAlert('Tâche supprimée', 'danger', true);
+    showAlert('Tâche supprimée', 'danger', true);
     backTodefault();
   };
 
   const clearTodos = async () => {
-    const { token } = getUserFromLocallStorage();
+    const { token } = getLocalStorage();
 
     try {
       await axios.delete(url, {
@@ -130,7 +131,7 @@ export const TodosProvider = ({ children }) => {
         }
       });
       dispatch({ type: CLEAR_TODOS });
-      // showAlert('Tableau vidé', 'danger', true);
+      showAlert('Tableau vidé', 'danger', true);
       backTodefault();
     } catch (error) {
       console.log(error.response.data.msg);
@@ -142,12 +143,12 @@ export const TodosProvider = ({ children }) => {
     }
   };
 
-  const backTodefault = () => {
+  const backTodefault = useCallback(() => {
     dispatch({ type: BACK_TO_DEFAULT });
-  };
+  }, []);
 
   const fetchTodos = useCallback(async () => {
-    const { token } = getUserFromLocallStorage();
+    const { token } = getLocalStorage();
     dispatch({ type: GET_TODOS_BEGIN });
 
     try {
@@ -175,6 +176,7 @@ export const TodosProvider = ({ children }) => {
         editTodo,
         deleteTodo,
         clearTodos,
+        backTodefault,
         inputRef
       }}
     >
